@@ -1,53 +1,37 @@
 // app/layout.tsx
-import type { Metadata } from "next";
 import "./globals.css";
+import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
-import HeaderShell from "./header-shell";
-import { LangProvider } from "./lang-provider";
+import Header from "./components/Header";
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
-  title: "شركة منطقة النفط للوقود | PZONE",
-  description: "منصة تعريفية رسمية لشركة منطقة النفط للوقود PZONE.",
+  title: "PZONE | شركة منطقة النفط للوقود",
+  description:
+    "شركة منطقة النفط للوقود PZONE – محطات وقود حديثة، شحن كهربائي، وحلول طاقة مستدامة في المملكة.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="ar" dir="rtl" className={cairo.className}>
-      <body className="min-h-screen bg-[#0b0920] text-white antialiased">
-        {/* خلفية */}
-        <div className="pointer-events-none fixed inset-0 -z-10">
-          <div className="absolute inset-0 bg-[radial-gradient(80%_60%_at_50%_0%,rgba(184,49,175,0.16),rgba(11,9,32,0))]" />
-          <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(25,167,224,0.08),rgba(11,9,32,0.0),rgba(0,0,0,0.40))]" />
-          <div className="absolute inset-0 opacity-[0.10] [background-image:radial-gradient(rgba(255,255,255,0.12)_1px,transparent_1px)] [background-size:22px_22px]" />
-        </div>
-
-        <LangProvider>
-          {/* Header (Client) */}
-          <HeaderShell />
-
-          <main className="mx-auto max-w-6xl px-4 pb-12 pt-10 sm:px-8 lg:px-12">
-            {children}
-          </main>
-
-          {/* Footer */}
-          <footer className="border-t border-white/10 bg-black/25">
-            <div className="mx-auto flex max-w-6xl flex-col items-center justify-center gap-1 px-4 py-5 text-[11px] text-slate-300 sm:flex-row sm:justify-between sm:gap-3 sm:px-8 sm:text-xs">
-              <p className="text-center sm:text-right">
-                © {new Date().getFullYear()} شركة منطقة النفط للوقود - PZONE. جميع
-                الحقوق محفوظة.
-              </p>
-              <p className="text-center text-slate-400 sm:text-right">
-                www.pzone.com.sa
-              </p>
+    <html lang="ar" dir="rtl">
+      <body className={`${cairo.className} bg-[#f5f7fb] text-slate-900`}>
+        <div className="min-h-screen flex flex-col">
+          <main className="flex-1">{children}</main>
+          <footer className="mt-10 border-t border-slate-200 bg-white">
+            <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-4 text-[11px] text-slate-500 md:flex-row">
+              <p>© {new Date().getFullYear()} شركة منطقة النفط للوقود – PZONE.</p>
+              <p>مستقبل صناعة الوقود والطاقة في المملكة.</p>
             </div>
           </footer>
-        </LangProvider>
+        </div>
       </body>
     </html>
   );
