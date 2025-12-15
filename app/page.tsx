@@ -175,7 +175,7 @@ export default function HomePage() {
       />
 
       {/* HERO بدون كرت، مع نص داكن وواضح */}
-      <section className="relative h-[72vh] min-h-[430px] md:h-[80vh] overflow-hidden bg-slate-900">
+<section className="relative h-[90vh] min-h-[520px] md:h-[100vh] overflow-hidden bg-slate-900">
         <AnimatePresence custom={direction}>
           <motion.div
             key={index}
@@ -375,9 +375,11 @@ export default function HomePage() {
                 {t.contactTitle}
               </h2>
               <p>{t.contactText}</p>
-              <p>
-                {t.contactPhoneLabel}: {phone}+
-              </p>
+<p className="ltr:text-left rtl:text-right">
+  {t.contactPhoneLabel}:{" "}
+  <span dir="ltr">+966 {phone.slice(1)}</span>
+</p>
+
               <p>
                 {t.contactEmailLabel}: {email}
               </p>
