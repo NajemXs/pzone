@@ -3,9 +3,13 @@ import nodemailer from 'nodemailer';
 
 export async function POST(request: Request) {
   try {
-    // 1. استلام البيانات اللي كتبها العميل في الفورم
     const body = await request.json();
     const { name, email, message } = body;
+
+    // 1. التحقق من أن المستخدم أدخل جميع البيانات
+    if (!name || !email || !message) {
+      return NextResponse.json({ error: "الرجاء تعبئة جميع الحقول" }, { status: 400 });
+    }
 
     // 2. إعداد الاتصال بسيرفر الإيميل (Zoho)
     const transporter = nodemailer.createTransport({
@@ -14,15 +18,16 @@ export async function POST(request: Request) {
       secure: true,
       auth: {
         user: "info@pzone.com.sa",
-        pass: "Hh@12345", // كلمة المرور اللي أنشأتها
+        // ⚠️ مهم جداً: يجب استخدام "كلمة مرور التطبيقات" وليس كلمة المرور العادية
+        pass: "APP_PASSWORD_HERE", 
       },
     });
 
-    // 3. تجهيز الرسالة اللي راح توصلك على إيميلك
+    // 3. تجهيز الرسالة
     const mailOptions = {
-      from: "info@pzone.com.sa", // الإيميل اللي يطلع منه الطلب
-      replyTo: email, // عشان لو ضغطت "رد" في إيميلك يروح الرد للعميل مباشرة
-      to: "info@pzone.com.sa", // الإيميل اللي راح يستقبل الرسالة (إيميلك)
+      from: "info@pzone.com.sa",
+      replyTo: email,
+      to: "info@pzone.com.sa",
       subject: `رسالة جديدة من الموقع - ${name}`,
       html: `
         <div dir="rtl" style="font-family: Arial, Tahoma, sans-serif; padding: 20px; color: #111;">
@@ -36,15 +41,14 @@ export async function POST(request: Request) {
       `,
     };
 
-    // 4. إرسال الرسالة فعلياً
+    // 4. إرسال الرسالة
     await transporter.sendMail(mailOptions);
 
-    // 5. إرجاع رد ناجح لواجهة الموقع
+    // 5. إرجاع رد ناجح
     return NextResponse.json({ message: "تم الإرسال بنجاح" }, { status: 200 });
     
   } catch (error: any) {
-    // طباعة الخطأ في السيرفر عشان لو صار مشكلة نقدر نعرفها
-    console.error("خطأ أثناء إرسال الإيميل:", error.message);
+    console.error("خطأ أثناء إرسال الإيميل:", error);
     return NextResponse.json({ error: "حدث خطأ في الإرسال" }, { status: 500 });
   }
 }
