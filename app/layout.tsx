@@ -1,4 +1,3 @@
-// app/layout.tsx
 import "./globals.css";
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
@@ -22,11 +21,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ar" dir="rtl">
-      <body className={`${cairo.className} bg-[#f5f7fb] text-slate-900`}>
+      {/* أضفنا selection لتجميل لون التحديد ليناسب هوية PZONE */}
+      <body className={`${cairo.className} bg-[#f5f7fb] text-slate-900 selection:bg-purple-600 selection:text-white`}>
         <div className="min-h-screen flex flex-col">
-          <main className="flex-1">{children}</main>
-          <footer className="mt-10 border-t border-slate-200 bg-white">
-            <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-4 text-[11px] text-slate-500 md:flex-row">
+          {/* شريط التنقل الخاص بك */}
+          <Header />
+          
+          {/* المحتوى الرئيسي */}
+          <main className="flex-1 flex flex-col">{children}</main>
+          
+          {/* الفوتر الخاص بك مع تحسينات بصرية بسيطة */}
+          <footer className="mt-auto border-t border-slate-200 bg-white">
+            <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-6 text-[13px] font-medium text-slate-500 md:flex-row text-center md:text-right">
               <p>© {new Date().getFullYear()} شركة منطقة النفط للوقود – PZONE.</p>
               <p>مستقبل صناعة الوقود والطاقة في المملكة.</p>
             </div>
