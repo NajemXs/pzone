@@ -12,29 +12,44 @@ export async function POST(request: Request) {
       secure: true, // استخدام التشفير SSL
       auth: {
         user: "info@pzone.com.sa",
-        pass: "Hh@12345", // كلمة مرور التطبيقات التي قمت بإنشائها
+        pass: "Hh@12345", // كلمة مرور التطبيقات
       },
     });
 
     // إعداد وتجهيز رسالة الإيميل
     const mailOptions = {
-      from: `"موقع PZONE" <info@pzone.com.sa>`, // يجب أن يكون الإرسال من إيميلك لتجنب الحظر من Zoho
-      replyTo: email, // إيميل العميل لكي تتمكن من الرد عليه مباشرة
-      to: "info@pzone.com.sa", // الإيميل الذي سيستقبل الرسالة
-      subject: `رسالة جديدة من الموقع: ${name}`,
+      // 1. المُرسل الفعلي (يجب أن يكون إيميلك لتجنب الحظر الأمني من Zoho)
+      from: `"PZONE Website" <info@pzone.com.sa>`, 
+      
+      // 2. إيميل العميل للرد (هنا السحر: عند الضغط على رد في Zoho، سيرد على العميل مباشرة)
+      replyTo: email, 
+      
+      // 3. الإيميل المستقبل (صندوق الوارد الخاص بك)
+      to: "info@pzone.com.sa", 
+      
+      // وضعنا اسم العميل وإيميله في العنوان لتكون واضحة لك في صندوق الوارد
+      subject: `رسالة جديدة من الموقع عبر: ${name} - ${email}`, 
+      
+      // تصميم الرسالة التي ستصلك
       html: `
-        <div dir="rtl" style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-          <h2 style="color: #4c1d95;">رسالة جديدة من نموذج التواصل</h2>
-          <p><strong>الاسم:</strong> ${name}</p>
-          <p><strong>البريد الإلكتروني:</strong> <a href="mailto:${email}">${email}</a></p>
-          <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;" />
-          <p><strong>محتوى الرسالة:</strong></p>
-          <p style="white-space: pre-wrap; background-color: #f9f9f9; padding: 15px; border-radius: 8px;">${message}</p>
+        <div dir="rtl" style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 10px; overflow: hidden;">
+          <div style="background-color: #0f172a; padding: 20px; text-align: center;">
+            <h2 style="color: #fff; margin: 0;">رسالة تواصل جديدة</h2>
+          </div>
+          <div style="padding: 20px; background-color: #f8fafc;">
+            <p style="margin-bottom: 10px;"><strong>اسم المُرسل:</strong> ${name}</p>
+            <p style="margin-bottom: 20px;"><strong>البريد الإلكتروني للعميل:</strong> <a href="mailto:${email}" style="color: #4c1d95;">${email}</a></p>
+            
+            <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
+            
+            <p style="color: #64748b; font-size: 14px; margin-bottom: 10px;"><strong>محتوى الرسالة:</strong></p>
+            <div style="background-color: #fff; padding: 15px; border-radius: 8px; border: 1px solid #e2e8f0; white-space: pre-wrap; font-size: 16px;">${message}</div>
+          </div>
         </div>
       `,
     };
 
-    // إرسال الإيميل
+    // تنفيذ عملية الإرسال
     await transporter.sendMail(mailOptions);
 
     return NextResponse.json({ message: "Email sent successfully" }, { status: 200 });
