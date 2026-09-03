@@ -21,6 +21,7 @@ export default function Home() {
 
   const isArabic = lang === "ar";
   const phone = "0555833295";
+  const whatsappNumber = "966555833295"; // رقم الواتساب بالصيغة الدولية (بدون الصفر)
   const email = "info@pzone.com.sa"; // تم تحديث الإيميل
 
   // دالة الإرسال الحقيقية عبر مسار API
@@ -61,12 +62,20 @@ export default function Home() {
   };
 
   return (
-    <div dir={isArabic ? "rtl" : "ltr"} className="flex flex-col items-center justify-center w-full bg-[#0f172a] text-white overflow-hidden selection:bg-purple-600 selection:text-white">
+    <div dir={isArabic ? "rtl" : "ltr"} className="flex flex-col items-center justify-center w-full bg-[#0f172a] text-white overflow-hidden selection:bg-purple-600 selection:text-white relative">
       
       <style dangerouslySetInnerHTML={{
         __html: `
           @keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
           .animate-fade-up { animation: fadeUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+          
+          /* تأثير النبض لأيقونة الواتساب */
+          @keyframes whatsappPulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+          }
+          .whatsapp-btn { animation: whatsappPulse 2s infinite; }
         `
       }} />
 
@@ -116,7 +125,6 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
             
-            {/* تم تعديل الامتدادات هنا إلى .jpeg */}
             <div className="bg-[#0f172a] rounded-3xl p-6 border border-white/5 hover:border-red-500/50 transition duration-300 group">
               <div className="h-64 w-full relative mb-6 rounded-2xl overflow-hidden bg-gradient-to-t from-black/50 to-transparent">
                 <Image src="/7.jpeg" alt="زيت محرك 5W-30" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
@@ -249,18 +257,15 @@ export default function Home() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-bold text-gray-300">{isArabic ? "الاسم الكامل" : "Full Name"}</label>
-                  {/* تمت إضافة name="name" ليتم التقاطها */}
                   <input type="text" name="name" required placeholder={isArabic ? "أدخل اسمك" : "Enter your name"} className={`w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-all ${isArabic ? "text-right" : "text-left"}`} />
                 </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-bold text-gray-300">{isArabic ? "البريد الإلكتروني" : "Email Address"}</label>
-                  {/* تمت إضافة name="email" */}
                   <input type="email" name="email" required placeholder="example@email.com" className={`w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-all ${isArabic ? "text-right" : "text-left"}`} />
                 </div>
               </div>
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-bold text-gray-300">{isArabic ? "رسالتك" : "Your Message"}</label>
-                {/* تمت إضافة name="message" */}
                 <textarea name="message" required rows={5} placeholder={isArabic ? "كيف يمكننا مساعدتك؟" : "How can we help you?"} className={`w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-all resize-none ${isArabic ? "text-right" : "text-left"}`}></textarea>
               </div>
               <button type="submit" disabled={isSubmitting} className="mt-4 w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 text-white font-black text-lg py-4 rounded-xl transition-all shadow-[0_5px_15px_rgba(147,51,234,0.3)]">
@@ -281,6 +286,20 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* أيقونة الواتساب العائمة (Floating WhatsApp Button) */}
+      <a
+        href={`https://wa.me/${whatsappNumber}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="تواصل معنا عبر واتساب"
+        className="fixed bottom-8 left-8 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-[0_4px_15px_rgba(0,0,0,0.3)] hover:scale-110 transition-transform duration-300 whatsapp-btn flex items-center justify-center"
+        title={isArabic ? "تواصل معنا عبر واتساب" : "Contact us on WhatsApp"}
+      >
+        <svg viewBox="0 0 24 24" width="36" height="36" fill="currentColor">
+          <path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.115.547 4.148 1.588 5.952L.475 24l6.195-1.624c1.745.953 3.69 1.455 5.688 1.455 6.647 0 12.031-5.385 12.031-12.031S18.678 0 12.031 0zm0 21.844c-1.785 0-3.53-.48-5.06-1.387l-.364-.214-3.766.986.995-3.67-.235-.375c-1-1.597-1.528-3.447-1.528-5.353 0-5.553 4.518-10.071 10.07-10.071 5.553 0 10.071 4.518 10.071 10.071s-4.518 10.071-10.071 10.071zm5.526-7.553c-.303-.152-1.794-.886-2.074-.988-.28-.101-.485-.152-.688.152-.202.303-.784.988-.962 1.19-.177.202-.355.228-.658.076-1.503-.75-2.617-1.393-3.623-2.924-.207-.315.021-.482.172-.631.137-.137.303-.354.455-.532.152-.177.202-.303.303-.506.101-.202.051-.38-.025-.532-.076-.152-.688-1.658-.94-2.27-.245-.595-.494-.515-.688-.524-.177-.009-.38-.009-.583-.009-.202 0-.532.076-.81.38-.28.303-1.063 1.037-1.063 2.53 0 1.493 1.088 2.936 1.24 3.138.152.202 2.138 3.262 5.178 4.57 2.051.884 2.808.966 3.82.814 1.14-.17 2.373-.974 2.703-1.918.33-.944.33-1.753.23-1.918-.101-.166-.355-.267-.658-.419z"/>
+        </svg>
+      </a>
 
     </div>
   );
