@@ -17,7 +17,7 @@ export default function Home() {
   };
 
   const phone = "0555833295";
-  const email = "info@pzone.com";
+  const email = "info@pzone.com.sa";
 
   return (
     <div className="flex flex-col items-center justify-center w-full bg-[#0f172a] text-white overflow-hidden selection:bg-purple-600 selection:text-white">
