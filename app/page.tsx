@@ -83,7 +83,7 @@ export default function Home() {
             {/* منتج 1: العلبة الحمراء */}
             <div className="bg-[#0f172a] rounded-3xl p-6 border border-white/5 hover:border-red-500/50 transition duration-300 group">
               <div className="h-64 w-full relative mb-6 rounded-2xl overflow-hidden bg-gradient-to-t from-black/50 to-transparent">
-                <Image src="/7.png" alt="زيت محرك 5W-30" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
+                <Image src="/7.jpeg" alt="زيت محرك 5W-30" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
               </div>
               <h3 className="text-2xl font-black text-white mb-2">زيت محرك 5W-30</h3>
               <p className="text-red-400 font-bold">أداء فائق (Maximum Performance)</p>
@@ -92,7 +92,7 @@ export default function Home() {
             {/* منتج 2: العلبة الذهبية */}
             <div className="bg-[#0f172a] rounded-3xl p-6 border border-white/5 hover:border-yellow-500/50 transition duration-300 group">
               <div className="h-64 w-full relative mb-6 rounded-2xl overflow-hidden bg-gradient-to-t from-black/50 to-transparent">
-                <Image src="/10.png" alt="زيت محرك 5W-30 ذهبي" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
+                <Image src="/10.jpeg" alt="زيت محرك 5W-30 ذهبي" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
               </div>
               <h3 className="text-2xl font-black text-white mb-2">زيت محرك 5W-30</h3>
               <p className="text-yellow-500 font-bold">تركيبة متطورة لحماية المحرك</p>
@@ -101,7 +101,7 @@ export default function Home() {
             {/* منتج 3: العلبة الزرقاء */}
             <div className="bg-[#0f172a] rounded-3xl p-6 border border-white/5 hover:border-blue-500/50 transition duration-300 group">
               <div className="h-64 w-full relative mb-6 rounded-2xl overflow-hidden bg-gradient-to-t from-black/50 to-transparent">
-                <Image src="/9.png" alt="زيت محرك 10W-30" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
+                <Image src="/9.jpeg" alt="زيت محرك 10W-30" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
               </div>
               <h3 className="text-2xl font-black text-white mb-2">زيت محرك 10W-30</h3>
               <p className="text-blue-400 font-bold">حماية متكاملة وعمر أطول</p>
@@ -110,7 +110,7 @@ export default function Home() {
             {/* منتج 4: العلبة الفضية */}
             <div className="bg-[#0f172a] rounded-3xl p-6 border border-white/5 hover:border-gray-400/50 transition duration-300 group">
               <div className="h-64 w-full relative mb-6 rounded-2xl overflow-hidden bg-gradient-to-t from-black/50 to-transparent">
-                <Image src="/8.png" alt="زيت محرك 20W-50" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
+                <Image src="/8.jpeg" alt="زيت محرك 20W-50" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
               </div>
               <h3 className="text-2xl font-black text-white mb-2">زيت محرك 20W-50</h3>
               <p className="text-gray-400 font-bold">لتحمل درجات الحرارة العالية</p>
@@ -119,7 +119,7 @@ export default function Home() {
             {/* منتج 5: مياه الرديتر */}
             <div className="bg-[#0f172a] rounded-3xl p-6 border border-white/5 hover:border-cyan-500/50 transition duration-300 group">
               <div className="h-64 w-full relative mb-6 rounded-2xl overflow-hidden bg-gradient-to-t from-black/50 to-transparent">
-                <Image src="/11.png" alt="مياه تبريد رديتر" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
+                <Image src="/11.jpeg" alt="مياه تبريد رديتر" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
               </div>
               <h3 className="text-2xl font-black text-white mb-2">مياه تبريد رديتر</h3>
               <p className="text-cyan-400 font-bold">Premium Coolant 4L</p>
