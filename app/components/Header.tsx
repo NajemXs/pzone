@@ -8,8 +8,8 @@ import { AnimatePresence, motion } from "framer-motion";
 type DropKey = "pages" | "blog" | null;
 type Lang = "ar" | "en";
 
-// تم تحديث رقم الهاتف واللون ليتناسب مع الهوية الجديدة
-const phone = "0590000000"; // ضع رقمك الصحيح هنا
+// تم وضع رقم الجوال الصحيح
+const phone = "0555833295";
 
 const ChevronDown = ({ open }: { open: boolean }) => (
   <motion.svg
@@ -31,16 +31,24 @@ const ChevronDown = ({ open }: { open: boolean }) => (
 );
 
 export default function Header() {
-  // نقلنا إدارة اللغة إلى داخل الهيدر ليعمل بدون مشاكل في layout
   const [lang, setLang] = useState<Lang>("ar");
-  const onToggleLang = () => setLang((prev) => (prev === "ar" ? "en" : "ar"));
-
   const [open, setOpen] = useState<DropKey>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileDrop, setMobileDrop] = useState<DropKey>(null);
 
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const closeTimer = useRef<number | null>(null);
+
+  // دالة تغيير اللغة وإرسال إشعار للصفحة الرئيسية لتتغير معها
+  const onToggleLang = () => {
+    setLang((prev) => {
+      const newLang = prev === "ar" ? "en" : "ar";
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("langChange", { detail: newLang }));
+      }
+      return newLang;
+    });
+  };
 
   const clearCloseTimer = () => {
     if (closeTimer.current) {
@@ -90,7 +98,6 @@ export default function Header() {
 
   return (
     <div ref={wrapRef} dir={isArabic ? "rtl" : "ltr"} className="sticky top-0 z-50">
-      {/* خلفية الهيدر الزجاجية الداكنة المتوافقة مع التصميم الجديد */}
       <div className="border-b border-purple-900/30 bg-[#0f172a]/85 backdrop-blur-xl shadow-lg shadow-purple-900/10">
         <header className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="h-[85px] flex items-center justify-between">
@@ -100,7 +107,7 @@ export default function Header() {
               <div className="h-14 w-14 sm:h-16 sm:w-16 rounded-2xl flex items-center justify-center bg-white overflow-hidden shadow-[0_0_20px_rgba(147,51,234,0.3)] group-hover:shadow-[0_0_25px_rgba(147,51,234,0.6)] transition-shadow">
                 <Image
                   src="/logo.jpg"
-                  alt="شعار PZONE"
+                  alt="PZONE Logo"
                   width={72}
                   height={72}
                   className="h-full w-full object-contain"
@@ -122,6 +129,7 @@ export default function Header() {
               <NavLink href="/">{isArabic ? "الرئيسية" : "Home"}</NavLink>
               <NavLink href="#about">{isArabic ? "من نحن" : "About"}</NavLink>
               <NavLink href="#services">{isArabic ? "الخدمات" : "Services"}</NavLink>
+              <NavLink href="#products">{isArabic ? "المنتجات" : "Products"}</NavLink>
               <NavLink href="#contact">{isArabic ? "تواصل معنا" : "Contact"}</NavLink>
             </nav>
 
@@ -136,7 +144,7 @@ export default function Header() {
 
               <a
                 href={`tel:${phone}`}
-                className="hidden lg:inline-flex items-center justify-center h-11 px-7 rounded-full font-extrabold text-white transition-all duration-300 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 shadow-[0_5px_20px_rgba(139,92,246,0.3)] hover:shadow-[0_8px_25px_rgba(139,92,246,0.5)] hover:-translate-y-1"
+                className="hidden lg:inline-flex items-center justify-center h-11 px-7 rounded-full font-extrabold text-white transition-all duration-300 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 shadow-[0_5px_20px_rgba(139,92,246,0.3)] hover:-translate-y-1"
               >
                 {isArabic ? "اتصل بنا" : "Call us"}
               </a>
@@ -147,7 +155,6 @@ export default function Header() {
                   setMobileOpen((v) => !v);
                   if (mobileOpen) setMobileDrop(null);
                 }}
-                aria-label="فتح القائمة"
               >
                 <span className="text-white text-xl">
                   {mobileOpen ? "✕" : "☰"}
@@ -179,15 +186,15 @@ export default function Header() {
                   <Link href="/" onClick={() => closeAll()} className="h-12 w-full flex items-center justify-center rounded-2xl bg-white/5 hover:bg-white/10 transition text-[16px] font-extrabold text-white">
                     {isArabic ? "الرئيسية" : "Home"}
                   </Link>
-
                   <Link href="#about" onClick={() => closeAll()} className="h-12 w-full flex items-center justify-center rounded-2xl bg-white/5 hover:bg-white/10 transition text-[16px] font-extrabold text-white">
                     {isArabic ? "من نحن" : "About"}
                   </Link>
-
                   <Link href="#services" onClick={() => closeAll()} className="h-12 w-full flex items-center justify-center rounded-2xl bg-white/5 hover:bg-white/10 transition text-[16px] font-extrabold text-white">
                     {isArabic ? "الخدمات" : "Services"}
                   </Link>
-
+                  <Link href="#products" onClick={() => closeAll()} className="h-12 w-full flex items-center justify-center rounded-2xl bg-white/5 hover:bg-white/10 transition text-[16px] font-extrabold text-white">
+                    {isArabic ? "المنتجات" : "Products"}
+                  </Link>
                   <Link href="#contact" onClick={() => closeAll()} className="h-12 w-full flex items-center justify-center rounded-2xl bg-white/5 hover:bg-white/10 transition text-[16px] font-extrabold text-white">
                     {isArabic ? "تواصل معنا" : "Contact"}
                   </Link>
@@ -199,10 +206,6 @@ export default function Header() {
                   >
                     {isArabic ? "اتصل بنا الآن" : "Call us now"}
                   </a>
-
-                  <div className="text-[12px] text-purple-300/70 mt-2 font-medium">
-                    {isArabic ? "خدمة العملاء عبر الاتصال المباشر" : "Customer service via direct call"}
-                  </div>
                 </div>
               </div>
             </motion.div>
