@@ -7,6 +7,7 @@ export default function Home() {
   const [lang, setLang] = useState("ar");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
+  const [isError, setIsError] = useState(false);
 
   // استقبال إشعار تغيير اللغة من الهيدر
   useEffect(() => {
@@ -20,15 +21,43 @@ export default function Home() {
 
   const isArabic = lang === "ar";
   const phone = "0555833295";
-  const email = "info@pzone.com";
+  const email = "info@pzone.com.sa"; // تم تحديث الإيميل
 
-  const handleContactSubmit = (e: FormEvent) => {
+  // دالة الإرسال الحقيقية عبر مسار API
+  const handleContactSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
+    setSubmitMessage("");
+    setIsError(false);
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      message: formData.get("message"),
+    };
+
+    try {
+      // إرسال البيانات إلى الـ API الخاص بنا
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setSubmitMessage(isArabic ? "تم إرسال رسالتك بنجاح! سنتواصل معك قريباً." : "Your message has been sent successfully! We will contact you soon.");
+        (e.target as HTMLFormElement).reset(); // تفريغ الحقول بعد الإرسال
+      } else {
+        setIsError(true);
+        setSubmitMessage(isArabic ? "حدث خطأ أثناء الإرسال، يرجى المحاولة لاحقاً." : "An error occurred while sending, please try again later.");
+      }
+    } catch (error) {
+      setIsError(true);
+      setSubmitMessage(isArabic ? "حدث خطأ في الاتصال، تأكد من شبكة الإنترنت." : "Connection error, please check your network.");
+    } finally {
       setIsSubmitting(false);
-      setSubmitMessage(isArabic ? "تم إرسال رسالتك بنجاح! سنتواصل معك قريباً." : "Your message has been sent successfully! We will contact you soon.");
-    }, 1500);
+    }
   };
 
   return (
@@ -87,9 +116,10 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
             
+            {/* تم تعديل الامتدادات هنا إلى .jpeg */}
             <div className="bg-[#0f172a] rounded-3xl p-6 border border-white/5 hover:border-red-500/50 transition duration-300 group">
               <div className="h-64 w-full relative mb-6 rounded-2xl overflow-hidden bg-gradient-to-t from-black/50 to-transparent">
-                <Image src="/7.png" alt="زيت محرك 5W-30" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
+                <Image src="/7.jpeg" alt="زيت محرك 5W-30" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
               </div>
               <h3 className="text-2xl font-black text-white mb-2">{isArabic ? "زيت محرك 5W-30" : "Engine Oil 5W-30"}</h3>
               <p className="text-red-400 font-bold">{isArabic ? "أداء فائق (Maximum Performance)" : "Maximum Performance"}</p>
@@ -97,7 +127,7 @@ export default function Home() {
 
             <div className="bg-[#0f172a] rounded-3xl p-6 border border-white/5 hover:border-yellow-500/50 transition duration-300 group">
               <div className="h-64 w-full relative mb-6 rounded-2xl overflow-hidden bg-gradient-to-t from-black/50 to-transparent">
-                <Image src="/10.png" alt="زيت محرك 5W-30 ذهبي" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
+                <Image src="/10.jpeg" alt="زيت محرك 5W-30 ذهبي" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
               </div>
               <h3 className="text-2xl font-black text-white mb-2">{isArabic ? "زيت محرك 5W-30" : "Engine Oil 5W-30"}</h3>
               <p className="text-yellow-500 font-bold">{isArabic ? "تركيبة متطورة لحماية المحرك" : "Advanced engine protection formula"}</p>
@@ -105,7 +135,7 @@ export default function Home() {
 
             <div className="bg-[#0f172a] rounded-3xl p-6 border border-white/5 hover:border-blue-500/50 transition duration-300 group">
               <div className="h-64 w-full relative mb-6 rounded-2xl overflow-hidden bg-gradient-to-t from-black/50 to-transparent">
-                <Image src="/9.png" alt="زيت محرك 10W-30" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
+                <Image src="/9.jpeg" alt="زيت محرك 10W-30" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
               </div>
               <h3 className="text-2xl font-black text-white mb-2">{isArabic ? "زيت محرك 10W-30" : "Engine Oil 10W-30"}</h3>
               <p className="text-blue-400 font-bold">{isArabic ? "حماية متكاملة وعمر أطول" : "Complete protection & longer lifespan"}</p>
@@ -113,7 +143,7 @@ export default function Home() {
 
             <div className="bg-[#0f172a] rounded-3xl p-6 border border-white/5 hover:border-gray-400/50 transition duration-300 group">
               <div className="h-64 w-full relative mb-6 rounded-2xl overflow-hidden bg-gradient-to-t from-black/50 to-transparent">
-                <Image src="/8.png" alt="زيت محرك 20W-50" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
+                <Image src="/8.jpeg" alt="زيت محرك 20W-50" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
               </div>
               <h3 className="text-2xl font-black text-white mb-2">{isArabic ? "زيت محرك 20W-50" : "Engine Oil 20W-50"}</h3>
               <p className="text-gray-400 font-bold">{isArabic ? "لتحمل درجات الحرارة العالية" : "Endures high temperatures"}</p>
@@ -121,7 +151,7 @@ export default function Home() {
 
             <div className="bg-[#0f172a] rounded-3xl p-6 border border-white/5 hover:border-cyan-500/50 transition duration-300 group">
               <div className="h-64 w-full relative mb-6 rounded-2xl overflow-hidden bg-gradient-to-t from-black/50 to-transparent">
-                <Image src="/11.png" alt="مياه تبريد رديتر" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
+                <Image src="/11.jpeg" alt="مياه تبريد رديتر" fill className="object-contain transform group-hover:scale-110 transition duration-500" />
               </div>
               <h3 className="text-2xl font-black text-white mb-2">{isArabic ? "مياه تبريد رديتر" : "Radiator Coolant"}</h3>
               <p className="text-cyan-400 font-bold">Premium Coolant 4L</p>
@@ -209,31 +239,34 @@ export default function Home() {
           </p>
 
           <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-12 shadow-2xl">
-            {submitMessage ? (
-              <div className="bg-green-500/20 border border-green-500/50 text-green-300 px-6 py-8 rounded-2xl text-xl font-bold">
+            {submitMessage && (
+              <div className={`mb-6 px-6 py-6 rounded-2xl text-xl font-bold border ${isError ? "bg-red-500/20 border-red-500/50 text-red-300" : "bg-green-500/20 border-green-500/50 text-green-300"}`}>
                 {submitMessage}
               </div>
-            ) : (
-              <form onSubmit={handleContactSubmit} className={`flex flex-col gap-6 ${isArabic ? "text-right" : "text-left"}`}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="flex flex-col gap-2">
-                    <label className="text-sm font-bold text-gray-300">{isArabic ? "الاسم الكامل" : "Full Name"}</label>
-                    <input type="text" required placeholder={isArabic ? "أدخل اسمك" : "Enter your name"} className={`w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-all ${isArabic ? "text-right" : "text-left"}`} />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <label className="text-sm font-bold text-gray-300">{isArabic ? "البريد الإلكتروني" : "Email Address"}</label>
-                    <input type="email" required placeholder="example@email.com" className={`w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-all ${isArabic ? "text-right" : "text-left"}`} />
-                  </div>
+            )}
+            
+            <form onSubmit={handleContactSubmit} className={`flex flex-col gap-6 ${isArabic ? "text-right" : "text-left"}`}>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-bold text-gray-300">{isArabic ? "الاسم الكامل" : "Full Name"}</label>
+                  {/* تمت إضافة name="name" ليتم التقاطها */}
+                  <input type="text" name="name" required placeholder={isArabic ? "أدخل اسمك" : "Enter your name"} className={`w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-all ${isArabic ? "text-right" : "text-left"}`} />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="text-sm font-bold text-gray-300">{isArabic ? "رسالتك" : "Your Message"}</label>
-                  <textarea required rows={5} placeholder={isArabic ? "كيف يمكننا مساعدتك؟" : "How can we help you?"} className={`w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-all resize-none ${isArabic ? "text-right" : "text-left"}`}></textarea>
+                  <label className="text-sm font-bold text-gray-300">{isArabic ? "البريد الإلكتروني" : "Email Address"}</label>
+                  {/* تمت إضافة name="email" */}
+                  <input type="email" name="email" required placeholder="example@email.com" className={`w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-all ${isArabic ? "text-right" : "text-left"}`} />
                 </div>
-                <button type="submit" disabled={isSubmitting} className="mt-4 w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 text-white font-black text-lg py-4 rounded-xl transition-all shadow-[0_5px_15px_rgba(147,51,234,0.3)]">
-                  {isSubmitting ? (isArabic ? "جاري الإرسال..." : "Sending...") : (isArabic ? "إرسال الرسالة" : "Send Message")}
-                </button>
-              </form>
-            )}
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-bold text-gray-300">{isArabic ? "رسالتك" : "Your Message"}</label>
+                {/* تمت إضافة name="message" */}
+                <textarea name="message" required rows={5} placeholder={isArabic ? "كيف يمكننا مساعدتك؟" : "How can we help you?"} className={`w-full bg-[#0f172a]/50 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-500 transition-all resize-none ${isArabic ? "text-right" : "text-left"}`}></textarea>
+              </div>
+              <button type="submit" disabled={isSubmitting} className="mt-4 w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 text-white font-black text-lg py-4 rounded-xl transition-all shadow-[0_5px_15px_rgba(147,51,234,0.3)]">
+                {isSubmitting ? (isArabic ? "جاري الإرسال..." : "Sending...") : (isArabic ? "إرسال الرسالة" : "Send Message")}
+              </button>
+            </form>
 
             <div className="mt-12 pt-8 border-t border-white/10 grid grid-cols-1 md:grid-cols-2 gap-6 text-center">
               <a href={`mailto:${email}`} className="flex flex-col items-center gap-2 text-gray-300 hover:text-purple-400 transition">
